@@ -22,28 +22,25 @@ def clearTerminal():
     clear = system('clear')
 
 def getGlobal(soup):
-    counts = []
-    for number in soup.find_all('div', class_= 'maincounter-number'):
-        counts.append(number.text)
+    counts = [n.text for n in soup.find_all('div', class_= 'maincounter-number')]
     return counts
 
 def printGlobal(soup):
     counts = getGlobal(soup)
-
-    totalCases = counts[0]
-    totalDeaths = counts[1]
-    totalRecovered = counts[2]
+    data = {}
+    data['totalCases'] = counts[0]
+    data['totalDeaths'] = counts[1]
+    data['totalRecovered'] = counts[2]
 
     print("__________________")
     print("GLOBAL STATISTICS")
     print("__________________")
     print()
 
-    print("Total Cases: %14s" %totalCases)
-    print("Total Deaths: %19s" %color(totalDeaths, colors.red))
-    print("Total Recovered: %15s" %color(totalRecovered, colors.green))
+    print("Total Cases: %14s" %data['totalCases'])
+    print("Total Deaths: %19s" %color(data['totalDeaths'], colors.red))
+    print("Total Recovered: %15s" %color(data['totalRecovered'], colors.green))
     print()
-
 def getUs(soup):
     countries = []
     table = soup.find('table')
@@ -104,4 +101,8 @@ def main():
         sleep(300)
         clearTerminal()
 
-main()
+#main()
+html = requests.get('https://www.worldometers.info/coronavirus/#countries').text
+soup = BeautifulSoup(html, 'lxml')
+
+printGlobal(soup)
