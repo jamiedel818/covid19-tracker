@@ -101,8 +101,4 @@ def main():
         sleep(300)
         clearTerminal()
 
-#main()
-html = requests.get('https://www.worldometers.info/coronavirus/#countries').text
-soup = BeautifulSoup(html, 'lxml')
-
-printGlobal(soup)
+main()
